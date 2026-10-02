@@ -1,0 +1,6 @@
+assets/*.woff2
+vendor/claude-rtl-companion/
+*.log
+*.zip
+installer/staging/
+installer/output/
