@@ -13,11 +13,45 @@ $RunScript = Join-Path $Root 'Claude-RTL-Run.ps1'
 $DisableScript = Join-Path $Root 'Disable-Claude-RTL.ps1'
 $VendorMain = Join-Path $Root 'vendor\claude-rtl-companion\claude-rtl.ps1'
 $PidFile = Join-Path $Root 'claude-rtl-tray.pid'
+$ActiveIconPath = Join-Path $Root 'assets\icons\Claude-RTL.ico'
+$InactiveIconPath = Join-Path $Root 'assets\icons\Claude-RTL-Inactive.ico'
+
+function Import-TrayIcon {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$Path
+    )
+
+    if (-not (Test-Path -LiteralPath $Path)) {
+        return [System.Drawing.SystemIcons]::Application
+    }
+
+    $stream = [System.IO.File]::Open(
+        $Path,
+        [System.IO.FileMode]::Open,
+        [System.IO.FileAccess]::Read,
+        [System.IO.FileShare]::ReadWrite
+    )
+
+    try {
+        $sourceIcon = New-Object System.Drawing.Icon($stream)
+        try {
+            return [System.Drawing.Icon]$sourceIcon.Clone()
+        }
+        finally {
+            $sourceIcon.Dispose()
+        }
+    }
+    finally {
+        $stream.Dispose()
+    }
+}
+
 
 $createdNew = $false
 $mutex = New-Object System.Threading.Mutex(
     $true,
-    'Local\ClaudeDesktopRTLRuntimeTray_v020',
+    'Local\ClaudeDesktopRTLRuntimeTray_v021',
     [ref]$createdNew
 )
 
@@ -147,7 +181,24 @@ function Get-RtlStatus {
     $fontLoaded = $false
     $queried = 0
 
-    foreach ($target in $targets) {
+    $candidates = @(
+        $targets |
+            Where-Object {
+                $_.webSocketDebuggerUrl -and
+                ($_.type -eq 'page' -or -not $_.type)
+            } |
+            Sort-Object @{
+                Expression = {
+                    if ($_.url -match 'claude|app://') { 0 } else { 1 }
+                }
+            }
+    )
+
+    foreach ($target in $candidates) {
+        if ($queried -ge 2) {
+            break
+        }
+
         $wsUrl = @($target.webSocketDebuggerUrl) |
             Where-Object { $_ } |
             Select-Object -First 1
@@ -166,6 +217,10 @@ function Get-RtlStatus {
 
             if ($state.rtl) { $rtlActive = $true }
             if ($state.font) { $fontLoaded = $true }
+
+            if ($rtlActive -and $fontLoaded) {
+                break
+            }
         }
         catch {}
     }
@@ -205,7 +260,7 @@ function Start-HiddenPowerShell {
 }
 
 $notify = New-Object System.Windows.Forms.NotifyIcon
-$notify.Icon = [System.Drawing.SystemIcons]::Application
+$notify.Icon = Import-TrayIcon -Path $InactiveIconPath
 $notify.Text = 'Claude RTL: checking...'
 $notify.Visible = $true
 
@@ -239,19 +294,26 @@ $exitItem.Text = 'Exit Tray Controller'
 $notify.ContextMenuStrip = $menu
 
 $script:LastActive = $null
+$script:RefreshInProgress = $false
 
 function Refresh-TrayStatus {
+    if ($script:RefreshInProgress) {
+        return
+    }
+
+    $script:RefreshInProgress = $true
+
     try {
         $s = Get-RtlStatus
 
         if ($s.Active) {
-            $notify.Icon = [System.Drawing.SystemIcons]::Information
+            $notify.Icon = Import-TrayIcon -Path $ActiveIconPath
             $notify.Text = 'Claude RTL: Active'
             $enableItem.Enabled = $false
             $disableItem.Enabled = $true
         }
         else {
-            $notify.Icon = [System.Drawing.SystemIcons]::Application
+            $notify.Icon = Import-TrayIcon -Path $InactiveIconPath
             $notify.Text = 'Claude RTL: Inactive'
             $enableItem.Enabled = $true
             $disableItem.Enabled = $s.Debugger
@@ -276,6 +338,9 @@ function Refresh-TrayStatus {
         $notify.Text = 'Claude RTL: status error'
         $enableItem.Enabled = $true
         $disableItem.Enabled = $true
+    }
+    finally {
+        $script:RefreshInProgress = $false
     }
 }
 
@@ -364,7 +429,7 @@ $($s.Detail)
 })
 
 $timer = New-Object System.Windows.Forms.Timer
-$timer.Interval = 3000
+$timer.Interval = 12000
 $timer.Add_Tick({ Refresh-TrayStatus })
 $timer.Start()
 

@@ -114,7 +114,23 @@ $rtlActive = $false
 $fontLoaded = $false
 $queried = 0
 
-foreach ($target in $targets) {
+$candidates = @(
+    $targets |
+        Where-Object {
+            $_.webSocketDebuggerUrl -and
+            ($_.type -eq 'page' -or -not $_.type)
+        } |
+        Sort-Object @{
+            Expression = {
+                if ($_.url -match 'claude|app://') { 0 } else { 1 }
+            }
+        }
+)
+
+foreach ($target in $candidates) {
+    if ($queried -ge 4) {
+        break
+    }
     $wsUrl = @($target.webSocketDebuggerUrl) |
         Where-Object { $_ } |
         Select-Object -First 1
@@ -133,6 +149,10 @@ foreach ($target in $targets) {
 
         if ($state.rtl) { $rtlActive = $true }
         if ($state.font) { $fontLoaded = $true }
+
+        if ($rtlActive -and $fontLoaded) {
+            break
+        }
     }
     catch {
         # A utility/devtools view may disappear while Claude is updating.

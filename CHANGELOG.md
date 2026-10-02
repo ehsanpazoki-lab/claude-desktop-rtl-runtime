@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.1-beta
+
+- Add original community icon assets for Setup, shortcuts, and tray.
+- Add explicit installer choice for showing the tray controller after install.
+- Add GitHub maintainer/repository metadata to installer and documentation.
+- Reduce Claude tray CDP polling frequency and bound target probing to reduce UI impact.
+
+
 ## 0.2.0-beta
 
 - Add a lightweight Windows system-tray controller with Enable/Disable/Status.

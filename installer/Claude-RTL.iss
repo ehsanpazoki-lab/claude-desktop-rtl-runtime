@@ -1,9 +1,12 @@
 ﻿#define MyAppName "Claude Desktop RTL Runtime"
 #ifndef MyAppVersion
-#define MyAppVersion "0.2.0-beta"
+#define MyAppVersion "0.2.1-beta"
 #endif
-#define MyAppPublisher "Community project"
+#define MyAppPublisher "Ehsan Pazoki (ehsanpazoki-lab)"
+#define MyAppPublisherURL "https://github.com/ehsanpazoki-lab"
 #define MyAppURL "https://github.com/ehsanpazoki-lab/claude-desktop-rtl-runtime"
+#define MyAppSupportURL "https://github.com/ehsanpazoki-lab/claude-desktop-rtl-runtime/issues"
+#define MyAppUpdatesURL "https://github.com/ehsanpazoki-lab/claude-desktop-rtl-runtime/releases"
 #define StartMenuFolder "{userprograms}\Claude Desktop RTL Runtime"
 
 [Setup]
@@ -12,7 +15,7 @@ AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 AppVerName={#MyAppName} {#MyAppVersion}
 AppPublisher={#MyAppPublisher}
-AppPublisherURL={#MyAppURL}
+AppPublisherURL={#MyAppPublisherURL}\nAppSupportURL={#MyAppSupportURL}\nAppUpdatesURL={#MyAppUpdatesURL}
 DefaultDirName={localappdata}\Programs\Claude Desktop RTL Runtime
 DefaultGroupName=Claude Desktop RTL Runtime
 DisableProgramGroupPage=yes
@@ -23,15 +26,27 @@ Compression=lzma2
 SolidCompression=yes
 WizardStyle=modern
 LicenseFile=..\LICENSE
+SetupIconFile=..\assets\icons\Claude-RTL.ico
+UninstallDisplayIcon={app}\assets\icons\Claude-RTL.ico
 UninstallDisplayName={#MyAppName}
 CloseApplications=no
 SetupLogging=yes
+VersionInfoCompany=Ehsan Pazoki / ehsanpazoki-lab
+VersionInfoDescription={#MyAppName} - community RTL runtime
+VersionInfoProductName={#MyAppName}
+VersionInfoProductVersion={#MyAppVersion}
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
-Name: "traystartup"; Description: "Start RTL tray controller with Windows"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
+Name: "tray"; Description: "Show RTL controller in the system tray after installation"; GroupDescription: "System tray:"; Flags: checkedonce
+Name: "tray\autostart"; Description: "Start RTL tray controller with Windows"; Flags: unchecked
 
 [Files]
+Source: "..\assets\icons\Claude-RTL.ico"; DestDir: "{app}\assets\icons"; Flags: ignoreversion
+Source: "..\assets\icons\Claude-RTL-Inactive.ico"; DestDir: "{app}\assets\icons"; Flags: ignoreversion
+Source: "..\assets\icons\Claude-RTL.png"; DestDir: "{app}\assets\icons"; Flags: ignoreversion
+Source: "..\assets\icons\Claude-RTL-Inactive.png"; DestDir: "{app}\assets\icons"; Flags: ignoreversion
+Source: "..\assets\icons\README.md"; DestDir: "{app}\assets\icons"; Flags: ignoreversion
 Source: "..\Claude-RTL-Run.cmd"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\Claude-RTL-Run.ps1"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\Disable-Claude-RTL.cmd"; DestDir: "{app}"; Flags: ignoreversion
@@ -57,20 +72,23 @@ Source: "..\THIRD_PARTY_NOTICES.fa.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\LICENSE"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
-Name: "{userdesktop}\Claude RTL"; Filename: "{app}\Claude-RTL-Run.cmd"; WorkingDir: "{app}"; Tasks: desktopicon
+Name: "{userdesktop}\Claude RTL"; Filename: "{app}\Claude-RTL-Run.cmd"; WorkingDir: "{app}"; IconFilename: "{app}\assets\icons\Claude-RTL.ico"; Tasks: desktopicon
 
-Name: "{#StartMenuFolder}\Claude RTL"; Filename: "{app}\Claude-RTL-Run.cmd"; WorkingDir: "{app}"
-Name: "{#StartMenuFolder}\Disable Claude RTL"; Filename: "{app}\Disable-Claude-RTL.cmd"; WorkingDir: "{app}"
-Name: "{#StartMenuFolder}\Claude RTL Status"; Filename: "{app}\Status-Claude-RTL.cmd"; WorkingDir: "{app}"
-Name: "{#StartMenuFolder}\RTL Tray Controller"; Filename: "{app}\Claude-RTL-Tray.cmd"; WorkingDir: "{app}"
+Name: "{#StartMenuFolder}\Claude RTL"; Filename: "{app}\Claude-RTL-Run.cmd"; WorkingDir: "{app}"; IconFilename: "{app}\assets\icons\Claude-RTL.ico"
+Name: "{#StartMenuFolder}\Disable Claude RTL"; Filename: "{app}\Disable-Claude-RTL.cmd"; WorkingDir: "{app}"; IconFilename: "{app}\assets\icons\Claude-RTL-Inactive.ico"
+Name: "{#StartMenuFolder}\Claude RTL Status"; Filename: "{app}\Status-Claude-RTL.cmd"; WorkingDir: "{app}"; IconFilename: "{app}\assets\icons\Claude-RTL.ico"
+Name: "{#StartMenuFolder}\RTL Tray Controller"; Filename: "{app}\Claude-RTL-Tray.cmd"; WorkingDir: "{app}"; IconFilename: "{app}\assets\icons\Claude-RTL.ico"
 Name: "{#StartMenuFolder}\Documentation (English)"; Filename: "{app}\README.md"
 Name: "{#StartMenuFolder}\مستندات فارسی"; Filename: "{app}\README.fa.md"
 Name: "{#StartMenuFolder}\Uninstall Claude Desktop RTL Runtime"; Filename: "{uninstallexe}"
 
-Name: "{userstartup}\Claude RTL Tray Controller"; Filename: "{sys}\WindowsPowerShell\v1.0\powershell.exe"; Parameters: "-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File ""{app}\Claude-RTL-Tray.ps1"""; WorkingDir: "{app}"; Tasks: traystartup
+Name: "{userstartup}\Claude RTL Tray Controller"; Filename: "{sys}\WindowsPowerShell\v1.0\powershell.exe"; Parameters: "-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File ""{app}\Claude-RTL-Tray.ps1"""; WorkingDir: "{app}"; IconFilename: "{app}\assets\icons\Claude-RTL.ico"; Tasks: tray\autostart
+
+[InstallDelete]
+Type: files; Name: "{userstartup}\Claude RTL Tray Controller.lnk"
 
 [Run]
-Filename: "{sys}\WindowsPowerShell\v1.0\powershell.exe"; Parameters: "-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File ""{app}\Claude-RTL-Tray.ps1"""; Description: "Start Claude RTL tray controller"; Flags: postinstall nowait skipifsilent
+Filename: "{sys}\WindowsPowerShell\v1.0\powershell.exe"; Parameters: "-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File ""{app}\Claude-RTL-Tray.ps1"""; Description: "Start Claude RTL tray controller"; Flags: postinstall nowait skipifsilent; Tasks: tray
 
 [UninstallRun]
 Filename: "{sys}\WindowsPowerShell\v1.0\powershell.exe"; Parameters: "-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File ""{app}\Stop-Claude-RTL-Tray.ps1"""; Flags: runhidden waituntilterminated
