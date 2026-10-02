@@ -7,7 +7,7 @@
 فایل زیر را از Releases دریافت کنید:
 
 ```text
-Claude-Desktop-RTL-Runtime-Setup-v0.1.0-beta.exe
+Claude-Desktop-RTL-Runtime-Setup-v0.1.1-beta.exe
 ```
 
 Installer:
@@ -61,3 +61,8 @@ Disable-Claude-RTL.cmd
 در نسخه Installer از **Settings → Apps → Installed apps** استفاده کنید.
 
 Uninstall فقط فایل‌های این ابزار را حذف می‌کند و Claude Desktop اصلی را تغییر نمی‌دهد. بهتر است قبل از Uninstall، `Disable Claude RTL` را اجرا کنید یا Claude را کامل Quit کنید.
+
+
+## Shortcut دسکتاپ
+
+- در مرحله نصب می‌توانید با تیک گزینه **Create a desktop shortcut** یک Shortcut برای `Claude RTL` روی Desktop ایجاد کنید؛ این گزینه پیش‌فرض خاموش است.

@@ -26,3 +26,8 @@ Workflow `build-installer.yml` روی Windows runner فایل Setup.exe را م�
 **نکته:** Setup.exe فعلاً Code Signing تجاری ندارد؛ بنابراین Windows SmartScreen ممکن است برای یک Publisher جدید هشدار reputation نشان دهد. این موضوع با UAC/Admin متفاوت است.
 
 Installer Claude نسخه pinشده upstream و Vazirmatn را داخل خود بسته‌بندی می‌کند؛ کاربر نهایی برای نصب به Git نیاز ندارد.
+
+
+## Shortcut دسکتاپ
+
+- در مرحله نصب می‌توانید با تیک گزینه **Create a desktop shortcut** یک Shortcut برای `Claude RTL` روی Desktop ایجاد کنید؛ این گزینه پیش‌فرض خاموش است.

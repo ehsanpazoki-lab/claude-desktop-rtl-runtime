@@ -14,7 +14,7 @@ if not exist "%ISCC%" (
   exit /b 2
 )
 
-"%ISCC%" "%~dp0Claude-RTL.iss"
+"%ISCC%" /DMyAppVersion=0.1.1-beta "%~dp0Claude-RTL.iss"
 set "RC=%ERRORLEVEL%"
 if not "%RC%"=="0" pause
 exit /b %RC%

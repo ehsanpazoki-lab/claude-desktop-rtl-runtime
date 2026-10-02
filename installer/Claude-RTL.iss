@@ -1,5 +1,7 @@
 ﻿#define MyAppName "Claude Desktop RTL Runtime"
-#define MyAppVersion "0.1.0-beta"
+#ifndef MyAppVersion
+#define MyAppVersion "0.1.1-beta"
+#endif
 #define MyAppPublisher "Community project"
 #define MyAppURL "https://github.com/"
 
@@ -15,7 +17,7 @@ DefaultGroupName=Claude Desktop RTL Runtime
 DisableProgramGroupPage=yes
 PrivilegesRequired=lowest
 OutputDir=output
-OutputBaseFilename=Claude-Desktop-RTL-Runtime-Setup-v0.1.0-beta
+OutputBaseFilename=Claude-Desktop-RTL-Runtime-Setup-v{#MyAppVersion}
 Compression=lzma2
 SolidCompression=yes
 WizardStyle=modern
@@ -23,6 +25,9 @@ LicenseFile=..\LICENSE
 UninstallDisplayName={#MyAppName}
 CloseApplications=no
 SetupLogging=yes
+
+[Tasks]
+Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
 Source: "..\Claude-RTL-Run.cmd"; DestDir: "{app}"; Flags: ignoreversion
@@ -45,6 +50,7 @@ Source: "..\THIRD_PARTY_NOTICES.fa.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\LICENSE"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
+Name: "{userdesktop}\Claude RTL"; Filename: "{app}\Claude-RTL-Run.cmd"; WorkingDir: "{app}"; Tasks: desktopicon
 Name: "{group}\Claude RTL"; Filename: "{app}\Claude-RTL-Run.cmd"; WorkingDir: "{app}"
 Name: "{group}\Disable Claude RTL"; Filename: "{app}\Disable-Claude-RTL.cmd"; WorkingDir: "{app}"
 Name: "{group}\Documentation (English)"; Filename: "{app}\README.md"

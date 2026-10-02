@@ -21,7 +21,7 @@ ab938536096145fb797f2f6cdbc7bb8c1a008b3e
 For most users, the recommended distribution is the per-user Windows installer:
 
 ```text
-Claude-Desktop-RTL-Runtime-Setup-v0.1.0-beta.exe
+Claude-Desktop-RTL-Runtime-Setup-v0.1.1-beta.exe
 ```
 
 The compiled installer bundles the pinned upstream Claude RTL Companion snapshot
@@ -119,3 +119,8 @@ Upstream Claude RTL Companion: MIT.
 Vazirmatn: OFL-1.1.
 
 See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+
+
+## Desktop shortcut
+
+- The installer offers an optional **Create a desktop shortcut** task for `Claude RTL`; it is unchecked by default.

@@ -20,7 +20,7 @@ ab938536096145fb797f2f6cdbc7bb8c1a008b3e
 برای کاربران عادی، Windows Setup روش پیشنهادی است:
 
 ```text
-Claude-Desktop-RTL-Runtime-Setup-v0.1.0-beta.exe
+Claude-Desktop-RTL-Runtime-Setup-v0.1.1-beta.exe
 ```
 
 Installer به‌صورت per-user نصب می‌شود و نسخه pinشده upstream و Vazirmatn را داخل خودش دارد؛ بنابراین برای استفاده معمولی Git لازم نیست.
@@ -82,3 +82,8 @@ Claude RTL Companion: MIT
 Vazirmatn: OFL-1.1
 
 جزئیات: [THIRD_PARTY_NOTICES.fa.md](THIRD_PARTY_NOTICES.fa.md)
+
+
+## Shortcut دسکتاپ
+
+- در مرحله نصب می‌توانید با تیک گزینه **Create a desktop shortcut** یک Shortcut برای `Claude RTL` روی Desktop ایجاد کنید؛ این گزینه پیش‌فرض خاموش است.
