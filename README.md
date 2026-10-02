@@ -124,3 +124,26 @@ See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 ## Desktop shortcut
 
 - The installer offers an optional **Create a desktop shortcut** task for `Claude RTL`; it is unchecked by default.
+
+## System tray controller
+
+`v0.2.0-beta` adds a lightweight tray controller:
+
+```text
+Enable RTL
+Disable RTL
+Status
+Exit Tray Controller
+```
+
+Double-clicking the tray icon starts the Enable flow. In each fresh Claude session,
+the existing manual step still applies:
+
+```text
+Developer → Enable Main Process Debugger
+```
+
+The installer can optionally start the tray controller with Windows. Auto-start is
+unchecked by default. It also creates an explicit **Claude Desktop RTL Runtime**
+Start Menu folder containing Run, Disable, Status, Tray Controller, documentation,
+and Uninstall.

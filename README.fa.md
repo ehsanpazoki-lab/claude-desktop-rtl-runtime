@@ -87,3 +87,26 @@ Vazirmatn: OFL-1.1
 ## Shortcut دسکتاپ
 
 - در مرحله نصب می‌توانید با تیک گزینه **Create a desktop shortcut** یک Shortcut برای `Claude RTL` روی Desktop ایجاد کنید؛ این گزینه پیش‌فرض خاموش است.
+
+## کنترل از System Tray
+
+در `v0.2.0-beta` یک Tray Controller سبک اضافه شده است:
+
+```text
+Enable RTL
+Disable RTL
+Status
+Exit Tray Controller
+```
+
+دابل‌کلیک روی آیکن Tray فرآیند Enable را شروع می‌کند. در هر Session تازه Claude
+مرحله دستی زیر همچنان لازم است:
+
+```text
+Developer → Enable Main Process Debugger
+```
+
+اجرای Tray Controller همراه Windows در Installer اختیاری و پیش‌فرض خاموش است.
+Installer فولدر مشخص **Claude Desktop RTL Runtime** را در Start Menu می‌سازد و
+Run، Disable، Status، Tray Controller، مستندات و Uninstall همگی داخل همان فولدر
+قرار می‌گیرند.

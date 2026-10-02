@@ -4,3 +4,4 @@ vendor/claude-rtl-companion/
 *.zip
 installer/staging/
 installer/output/
+claude-rtl-tray.pid

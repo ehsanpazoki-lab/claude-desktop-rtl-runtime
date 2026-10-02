@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.0-beta
+
+- Add a lightweight Windows system-tray controller with Enable/Disable/Status.
+- Add dedicated Claude RTL status scripts.
+- Create explicit Start Menu folder shortcuts for Run, Disable, Status, Tray, docs, and Uninstall.
+- Add optional tray auto-start with Windows and automatic tray shutdown during uninstall.
+
+
 ## 0.1.1-beta
 
 - Adds optional Desktop shortcut task to the Windows installer (unchecked by default).
